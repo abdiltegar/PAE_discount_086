@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Aplikasi Sederhana Hitung Diskon</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        
+        <style>
+            body{
+                background-color: #eee;
+            }
+            #result{
+                display:none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row d-flex justify-content-center" style="padding-top: 50px">
+                <div class="col-md-8 card" style="padding:0px">
+                    <div class="card-header text-center">
+                        <h2>APLIKASI SEDERHANA PERHITUNGAN DISKON</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-control">
+                            <div class="form-group row">
+                                <label for="hargaAsli" class="col-sm-2 col-form-label">Harga Asli</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" id="hargaAsli" name="hargaAsli" placeholder="10000">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="diskon" class="col-sm-2 col-form-label">Diskon</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" id="diskon" name="diskon" placeholder="10">
+                                </div>
+                                <label for="diskon" class="col-sm-2 col-form-label">%</label>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12 text-center">
+                                    <button class="btn btn-success" id="btnHitung">Hitung</button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div id="result">
+                            <hr>
+                            <div class="form-control">
+                                <h3>Hasil Perhitungan</h3>
+                                <br>
+                                <div class="form-group row">
+                                    <label for="resultHargaAsli" class="col-sm-4 col-form-label">Harga Asli</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="resultHargaAsli" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="resultDiskon" class="col-sm-4 col-form-label">Diskon</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="resultDiskon" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="resultBesarDiskon" class="col-sm-4 col-form-label">Besar Diskon</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="resultBesarDiskon" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="resultHargaDiskon" class="col-sm-4 col-form-label">Harga Setelah Diskon</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="resultHargaDiskon" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        Abdil Tegar Arifin - 20190140086
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        $(document).ready(function(){
+            $('#btnHitung').click(function(){
+                var hargaAsli = $('#hargaAsli').val();
+                var diskon = $('#diskon').val();
+                var sendData = {
+                    diskon : diskon,
+                    hargaAsli : hargaAsli
+                };
+//                var requestJSON = JSON.stringify(sendData);
+                var url = "http://localhost:8080/discount";
+                
+                $.ajax({
+                    type : "GET",
+                    url : url,
+                    headers : {
+                        "Content-Type" : "application/json"
+                    },
+                    data: sendData,
+                    success : function(data) {
+                        console.log("data",data);
+                        $('#resultHargaAsli').val(data.hargaAsli);
+                        $('#resultDiskon').val(data.diskon);
+                        $('#resultBesarDiskon').val(data.besarDiskon);
+                        $('#resultHargaDiskon').val(data.hargaDiskon);
+                        $('#result').css("display","block"); 
+                    },
+                    error : function(data) {
+                        console.log("Error",data);
+                    }
+                });
+            });
+        });
+    </script>
+</html>
